@@ -106,6 +106,18 @@ public class LauncherStore {
         prefs.edit().putInt("iconSize", size).apply();
     }
 
+    /** 앱 이름 글꼴: 0 = 시스템 기본, 1 = 갈무리(픽셀 폰트). 사운드업 저해상도 화면에 맞춰 갈무리가 기본. */
+    static final int FONT_DEFAULT = 0;
+    static final int FONT_GALMURI = 1;
+
+    int labelFont() {
+        return prefs.getInt("labelFont", FONT_GALMURI);
+    }
+
+    void setLabelFont(int font) {
+        prefs.edit().putInt("labelFont", font).apply();
+    }
+
     /** 앱별 커스텀 아이콘 파일명 ("icon.<앱키>" → 보관함 파일명) */
     String customIcon(String appKey) {
         return prefs.getString("icon." + appKey, null);

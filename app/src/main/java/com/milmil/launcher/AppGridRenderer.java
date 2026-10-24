@@ -24,8 +24,11 @@ public class AppGridRenderer {
     private final ImageView[] icons;
     private final TextView[] labels;
 
+    /** item_app.xml 의 app_label textSize */
+    private static final float LABEL_SP = 11f;
+
     AppGridRenderer(MainActivity activity, GridLayout grid, int columns, int rows,
-            int iconSizePx) {
+            int iconSizePx, int labelFont) {
         this.activity = activity;
         this.pageSize = columns * rows;
         this.cells = new View[pageSize];
@@ -59,6 +62,9 @@ public class AppGridRenderer {
             cells[i] = cell;
             icons[i] = cell.findViewById(R.id.app_icon);
             labels[i] = cell.findViewById(R.id.app_label);
+            if (labelFont == LauncherStore.FONT_GALMURI) {
+                PixelFont.apply(labels[i], LABEL_SP);
+            }
             // 그리드 셀 크기는 그대로 두고 아이콘 이미지 크기만 조절한다
             android.view.ViewGroup.LayoutParams iconLp = icons[i].getLayoutParams();
             iconLp.width = iconSizePx;

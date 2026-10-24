@@ -54,6 +54,9 @@ public class MainActivity extends Activity {
     private static final int[] ICON_SIZE_DP = {48, 60};
     private static final String[] ICON_SIZE_LABELS = {"보통", "크게"};
 
+    /** LauncherStore.FONT_* 인덱스 순서: 기본, 갈무리 */
+    private static final String[] LABEL_FONT_LABELS = {"기본", "갈무리 (픽셀 폰트)"};
+
     /** 전체 앱(숨김 포함) 표시 순서. 저장되는 homeOrder의 원본. */
     private final List<AppInfo> allOrdered = new ArrayList<>();
     /** 홈에 실제 표시되는 앱 (allOrdered - 숨김) */
@@ -296,7 +299,7 @@ public class MainActivity extends Activity {
         grid.removeAllViews();
         int iconSizePx = (int) (ICON_SIZE_DP[store.iconSize()]
                 * getResources().getDisplayMetrics().density);
-        renderer = new AppGridRenderer(this, grid, COLUMNS, rows, iconSizePx);
+        renderer = new AppGridRenderer(this, grid, COLUMNS, rows, iconSizePx, store.labelFont());
 
         applyPanelStyle();
         clampCurrentPage();
@@ -424,7 +427,7 @@ public class MainActivity extends Activity {
 
     private void showSettingsDialog() {
         String[] items = {"배경화면 선택", "배경화면 제거", "패널 크기", "패널 스타일",
-                "패널 위치", "아이콘 크기",
+                "패널 위치", "아이콘 크기", "글꼴",
                 store.hideStatusBar() ? "상단바 표시" : "상단바 숨기기",
                 "앱 숨김 관리", "앱 순서 초기화"};
         new AlertDialog.Builder(this)
@@ -450,13 +453,16 @@ public class MainActivity extends Activity {
                             showIconSizeDialog();
                             break;
                         case 6:
+                            showLabelFontDialog();
+                            break;
+                        case 7:
                             store.setHideStatusBar(!store.hideStatusBar());
                             applyStatusBarConfig();
                             break;
-                        case 7:
+                        case 8:
                             showHiddenAppsDialog();
                             break;
-                        case 8:
+                        case 9:
                             showResetOrderDialog();
                             break;
                     }
@@ -503,6 +509,17 @@ public class MainActivity extends Activity {
                 .setTitle("아이콘 크기")
                 .setSingleChoiceItems(ICON_SIZE_LABELS, store.iconSize(), (dialog, which) -> {
                     store.setIconSize(which);
+                    applyPanelConfig();
+                    dialog.dismiss();
+                })
+                .show();
+    }
+
+    private void showLabelFontDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("글꼴")
+                .setSingleChoiceItems(LABEL_FONT_LABELS, store.labelFont(), (dialog, which) -> {
+                    store.setLabelFont(which);
                     applyPanelConfig();
                     dialog.dismiss();
                 })

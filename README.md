@@ -16,7 +16,8 @@
 - 테마 `Theme.Material` → `Theme.DeviceDefault` (KitKat에는 Material 테마가 없음. 대화상자는 기기 기본 스타일로 표시)
 - 앱 그리드 셀 크기: `GridLayout` spec weight(API 21+) 대신 그리드 크기를 직접 균등 분배
 - 상단바: KitKat은 상단바 색을 바꿀 수 없어, 상단바 표시 중엔 컨텐츠를 상단바 아래부터 배치 (숨기기는 그대로 지원)
-- Android 5.0 이상에서는 원본과 동일하게 동작
+- 앱 이름 글꼴: [갈무리](https://github.com/quiple/galmuri) 픽셀 폰트를 기본으로 사용 (설계 크기의 정수배 + 안티앨리어싱 끔 → 저해상도 e-ink에서 또렷함). 런처 설정에서 기본 글꼴로 바꿀 수 있음
+- 그 외 Android 5.0 이상에서는 원본과 동일하게 동작
 
 ## 특징
 
@@ -25,13 +26,14 @@
 - **패널 위치** : 상 / 중 / 하 (전체 화면 외)
 - **배경 스타일** : 투명 / 반투명 / 종이 / 액자
 - **아이콘 크기** : 보통 / 크게
+- **글꼴** : 갈무리(픽셀 폰트) / 기본
 - **앱 아이콘 교체** : 원하는 이미지를 앱 아이콘으로 지정
 - **페이지 전환** : 좌우 스와이프, 또는 물리 페이지키(`PAGE_UP` / `PAGE_DOWN`)가 있는 기기에서는 버튼으로
 - 검정 텍스트와 선, 페이지 즉시 교체 (e-ink 최적화)
 
 ## 설치
 
-[릴리스](../../releases/latest)에서 `milmil-launcher-soundup-0.2.1.apk`를 받아 설치합니다.
+[릴리스](../../releases/latest)에서 `milmil-launcher-soundup-0.3.0.apk`를 받아 설치합니다.
 
 사운드업 설정에는 개발자 옵션 메뉴가 없어서, USB 디버깅은 숨겨진 터치로 켭니다.
 
@@ -40,7 +42,7 @@
 3. USB 디버깅은 재부팅하면 다시 꺼지므로, 필요할 때마다 다시 켭니다.
 
 ```bash
-adb install milmil-launcher-soundup-0.2.1.apk
+adb install milmil-launcher-soundup-0.3.0.apk
 ```
 
 설치 후 홈 버튼을 눌러 "밀밀 런처"를 기본 홈으로 지정합니다.
@@ -58,6 +60,7 @@ adb install milmil-launcher-soundup-0.2.1.apk
 - **패널 스타일** : 그리드 뒤 배경 처리(투명 / 반투명 / 종이 / 액자).
 - **패널 위치** : 전체 화면이 아닐 때 그리드를 상 / 중 / 하 중 어디에 둘지 선택합니다. 전체 화면일 땐 위아래 여백을 동일하게 맞춥니다.
 - **아이콘 크기** : 보통 / 크게.
+- **글꼴** : 앱 이름 글꼴. 갈무리는 화면 밀도에 맞춰 Galmuri11(12px)·Galmuri14(15px) 중 원래 크기에 가장 가까운 정수배를 고릅니다.
 - **상단바 표시** : 런처 화면에서 상단바를 숨기거나 표시합니다.
 - **앱 숨김 관리 / 앱 순서 초기화** : 숨긴 앱을 되돌리거나 순서를 초기화합니다.
 
@@ -101,3 +104,5 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 ## 라이선스
 
 MIT
+
+포함된 갈무리 글꼴(`app/src/main/assets/fonts/Galmuri*.ttf`, v2.40.4)은 Lee Minseo(quiple)의 작품으로 [SIL Open Font License 1.1](app/src/main/assets/fonts/Galmuri-LICENSE.txt)을 따릅니다.
