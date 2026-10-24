@@ -17,6 +17,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.KeyEvent;
@@ -147,20 +148,28 @@ public class MainActivity extends Activity {
 
     /**
      * 상단바 숨김 설정을 창에 반영한다. 런처 화면에서만 적용된다.
-     * 컨텐츠는 항상 상단바 뒤까지 깔리므로(투명 상단바 오버레이) 토글해도
-     * 배경화면 크기와 레이아웃이 변하지 않는다.
+     * Lollipop 이상에서는 컨텐츠가 항상 상단바 뒤까지 깔리므로(투명 상단바 오버레이)
+     * 토글해도 배경화면 크기와 레이아웃이 변하지 않는다.
+     * KitKat(사운드업)은 상단바 색을 바꿀 수 없고 불투명이라, 표시 중엔 컨텐츠를
+     * 상단바 아래부터 배치한다.
      */
     private void applyStatusBarConfig() {
         View decor = getWindow().getDecorView();
-        int flags = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        boolean overlay = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+        int flags = 0;
+        if (overlay) {
+            flags |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        }
         if (store.hideStatusBar()) {
             flags |= View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         }
         decor.setSystemUiVisibility(flags);
-        getWindow().setStatusBarColor(0x00000000);
+        if (overlay) {
+            getWindow().setStatusBarColor(0x00000000);
+        }
     }
 
     @Override

@@ -4,7 +4,7 @@
     <application
         android:label="밀밀 런처"
         android:icon="@mipmap/ic_launcher"
-        android:theme="@android:style/Theme.Material.Light.NoActionBar"
+        android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar"
         android:allowBackup="true">
 
         <activity

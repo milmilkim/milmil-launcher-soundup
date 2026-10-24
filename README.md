@@ -2,13 +2,21 @@
   <img src="docs/icon.png" width="120" alt="밀밀 런처 아이콘">
 </p>
 
-<h1 align="center">밀밀 런처</h1>
+<h1 align="center">밀밀 런처 for 사운드업</h1>
 
-<p align="center"><b>Milmil Launcher</b> · 크레마 팔레트 전용 초경량 홈 런처</p>
+<p align="center"><b>Milmil Launcher for Sound Up</b> · 크레마 사운드업(Android 4.4)용 초경량 홈 런처</p>
 
-크레마 팔레트(YES24 e-ink 리더) 전용 초경량 개인 홈 런처입니다. e-ink에 맞춰 애니메이션과 백그라운드 작업 없이 즉시 반응하도록 만들었습니다.
+[밀밀 런처](https://github.com/milmilkim/milmil-launcher)(크레마 팔레트용)를 지원 종료된 **크레마 사운드업**(Android 4.4.4 KitKat)에서 돌아가도록 옮긴 버전입니다. e-ink에 맞춰 애니메이션과 백그라운드 작업 없이 즉시 반응합니다.
 
-![홈](docs/home.png)
+![사운드업 홈](docs/home_soundup.png)
+
+### 원본과 달라진 점
+
+- `minSdk` 21 → **19** (Android 4.4)
+- 테마 `Theme.Material` → `Theme.DeviceDefault` (KitKat에는 Material 테마가 없음. 대화상자는 기기 기본 스타일로 표시)
+- 앱 그리드 셀 크기: `GridLayout` spec weight(API 21+) 대신 그리드 크기를 직접 균등 분배
+- 상단바: KitKat은 상단바 색을 바꿀 수 없어, 상단바 표시 중엔 컨텐츠를 상단바 아래부터 배치 (숨기기는 그대로 지원)
+- Android 5.0 이상에서는 원본과 동일하게 동작
 
 ## 특징
 
@@ -18,20 +26,21 @@
 - **배경 스타일** : 투명 / 반투명 / 종이 / 액자
 - **아이콘 크기** : 보통 / 크게
 - **앱 아이콘 교체** : 원하는 이미지를 앱 아이콘으로 지정
-- **물리 페이지키** : 크레마 상하 버튼(`PAGE_UP` / `PAGE_DOWN`)으로 페이지 전환
+- **페이지 전환** : 좌우 스와이프, 또는 물리 페이지키(`PAGE_UP` / `PAGE_DOWN`)가 있는 기기에서는 버튼으로
 - 검정 텍스트와 선, 페이지 즉시 교체 (e-ink 최적화)
 
 ## 설치
 
-[릴리스](../../releases/latest)에서 `milmil-launcher-0.2.0.apk`를 받아 설치합니다.
+[릴리스](../../releases/latest)에서 `milmil-launcher-soundup-0.2.0.apk`를 받아 설치합니다.
 
-adb로 설치하려면 먼저 기기에서 USB 디버깅을 켜세요. (설정 → 기기 정보에서 빌드번호를 7번 눌러 개발자 옵션을 켠 뒤, 개발자 옵션에서 USB 디버깅 활성화)
+사운드업 설정에는 개발자 옵션 메뉴가 없어서, USB 디버깅은 숨겨진 터치로 켭니다.
+
+1. 설정 → 기기 정보 화면을 엽니다.
+2. 화면 **맨 아래 가장자리**를 가로 3등분(좌/중/우)해서 **좌 → 우 → 우 → 중 → 좌** 순서로 터치합니다.
+3. USB 디버깅은 재부팅하면 다시 꺼지므로, 필요할 때마다 다시 켭니다.
 
 ```bash
-# 크레마는 adb 설치를 기기 베리파이어가 막을 수 있어, 최초 1회만:
-adb shell settings put global verifier_verify_adb_installs 0
-
-adb install milmil-launcher-0.2.0.apk
+adb install milmil-launcher-soundup-0.2.0.apk
 ```
 
 설치 후 홈 버튼을 눌러 "밀밀 런처"를 기본 홈으로 지정합니다.
@@ -67,7 +76,7 @@ adb install milmil-launcher-0.2.0.apk
 
 ### 페이지 전환
 
-크레마 본체의 상하 물리 버튼(페이지 넘김 키)으로 홈 페이지를 넘길 수 있습니다.
+홈 화면을 좌우로 스와이프해서 페이지를 넘깁니다. 물리 페이지 넘김 키가 있는 기기에서는 상하 버튼으로도 넘길 수 있습니다.
 
 ## 설계 원칙
 
@@ -78,7 +87,8 @@ adb install milmil-launcher-0.2.0.apk
 
 ## 요구 사항
 
-- 크레마 팔레트 (Android 14 / SDK 34, 1264x1680 @320dpi)
+- 크레마 사운드업 (CREMA-0660L, Android 4.4.4 / SDK 19, 758x1024) 펌웨어 v1.0.44에서 확인
+- Android 4.4 이상 기기라면 대부분 동작 (원본 대상인 크레마 팔레트 포함)
 - 루트 불필요
 
 ## 빌드 (직접 빌드할 경우)

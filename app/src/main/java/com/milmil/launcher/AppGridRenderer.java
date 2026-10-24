@@ -1,7 +1,9 @@
 package com.milmil.launcher;
 
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,13 +35,19 @@ public class AppGridRenderer {
         grid.setColumnCount(columns);
         grid.setRowCount(rows);
 
+        // spec weight는 API 21부터라 KitKat(사운드업)에서는 셀 크기를 직접 나눈다
+        boolean weighted = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
         LayoutInflater inflater = activity.getLayoutInflater();
         for (int i = 0; i < pageSize; i++) {
             final int cellIndex = i;
             View cell = inflater.inflate(R.layout.item_app, grid, false);
-            GridLayout.LayoutParams lp = new GridLayout.LayoutParams(
-                    GridLayout.spec(i / columns, 1f),
-                    GridLayout.spec(i % columns, 1f));
+            GridLayout.LayoutParams lp = weighted
+                    ? new GridLayout.LayoutParams(
+                            GridLayout.spec(i / columns, 1f),
+                            GridLayout.spec(i % columns, 1f))
+                    : new GridLayout.LayoutParams(
+                            GridLayout.spec(i / columns),
+                            GridLayout.spec(i % columns));
             lp.width = 0;
             lp.height = 0;
             cell.setLayoutParams(lp);
@@ -69,6 +77,40 @@ public class AppGridRenderer {
                 labels[i].setLayoutParams(labelLp);
             }
         }
+        if (!weighted) {
+            fitCellsToGrid(grid, columns, rows);
+        }
+    }
+
+    /**
+     * 그리드 크기가 정해질 때마다 셀 크기를 columns x rows로 균등 분배한다 (weight 대체).
+     * 렌더러는 패널 설정이 바뀔 때마다 새로 만들어지므로 이전 리스너는 떼어낸다.
+     */
+    private void fitCellsToGrid(GridLayout grid, int columns, int rows) {
+        Object previous = grid.getTag(R.id.app_grid);
+        if (previous instanceof View.OnLayoutChangeListener) {
+            grid.removeOnLayoutChangeListener((View.OnLayoutChangeListener) previous);
+        }
+        View.OnLayoutChangeListener listener =
+                (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            int cellW = (right - left - grid.getPaddingLeft() - grid.getPaddingRight()) / columns;
+            int cellH = (bottom - top - grid.getPaddingTop() - grid.getPaddingBottom()) / rows;
+            ViewGroup.LayoutParams first = cells[0].getLayoutParams();
+            if (cellW <= 0 || cellH <= 0 || (first.width == cellW && first.height == cellH)) {
+                return;
+            }
+            // 레이아웃 도중 requestLayout을 피하려고 다음 프레임에 반영한다
+            grid.post(() -> {
+                for (View cell : cells) {
+                    ViewGroup.LayoutParams lp = cell.getLayoutParams();
+                    lp.width = cellW;
+                    lp.height = cellH;
+                    cell.setLayoutParams(lp);
+                }
+            });
+        };
+        grid.setTag(R.id.app_grid, listener);
+        grid.addOnLayoutChangeListener(listener);
     }
 
     void render(List<AppInfo> apps, int page, AppInfo moving) {

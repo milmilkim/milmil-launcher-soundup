@@ -1,8 +1,17 @@
-# milmil-launcher
+# milmil-launcher-soundup
 
-크레마 팔레트(Crema Palette) 전용 초경량 개인 런처. 구현 계획은 대화로 확정된 플랜 문서를 따른다.
+milmil-launcher(크레마 팔레트용)를 크레마 사운드업(Android 4.4)에서 돌아가게 옮긴 버전. minSdk 19.
 
-## 실기기 확인된 사실 (2026-07-07)
+## 사운드업 실기기 확인된 사실 (2026-10-24)
+
+- 기기: Crema Sound Up (`model:CREMA_0660L`, adb serial `CREMA89W024271`)
+- Android 4.4.4 (SDK 19), Rockchip rk312x, 펌웨어 v1.0.44
+- 화면: 758x1024, 상단바 66px (크레마 커스텀 SystemUI, 불투명 흰색)
+- USB 디버깅: 설정 → 기기 정보 화면 맨 아래 가장자리를 좌-우-우-중-좌 터치. 재부팅하면 꺼짐
+- adb install은 베리파이어 설정 없이 바로 됨
+- API 21+ 호출(`Window#setStatusBarColor`, `GridLayout.spec(int, float)` 등)은 Build.VERSION 분기 필수. `./gradlew lintDebug`의 NewApi로 확인
+
+## 크레마 팔레트 실기기 확인된 사실 (2026-07-07, 원본)
 
 - 기기: Crema Palette (`model:CREMA_PALETTE`)
 - Android 14 (SDK 34)
