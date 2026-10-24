@@ -31,7 +31,7 @@
 
 ## 설치
 
-[릴리스](../../releases/latest)에서 `milmil-launcher-soundup-0.2.0.apk`를 받아 설치합니다.
+[릴리스](../../releases/latest)에서 `milmil-launcher-soundup-0.2.1.apk`를 받아 설치합니다.
 
 사운드업 설정에는 개발자 옵션 메뉴가 없어서, USB 디버깅은 숨겨진 터치로 켭니다.
 
@@ -40,7 +40,7 @@
 3. USB 디버깅은 재부팅하면 다시 꺼지므로, 필요할 때마다 다시 켭니다.
 
 ```bash
-adb install milmil-launcher-soundup-0.2.0.apk
+adb install milmil-launcher-soundup-0.2.1.apk
 ```
 
 설치 후 홈 버튼을 눌러 "밀밀 런처"를 기본 홈으로 지정합니다.
